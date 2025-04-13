@@ -1,0 +1,23 @@
+version: '3'
+
+services:
+  mcp-server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "9090:9090"
+    environment:
+      - MCP_NAME=MCP-Skeleton
+      - MCP_DESCRIPTION=MCP Skeleton Server
+      - MCP_PORT=9090
+      - MCP_LOG_LEVEL=INFO
+      # Add your custom environment variables here
+      # - API_BASE_URL=https://api.example.com
+      # - API_KEY=your_api_key
+    volumes:
+      # For development, you can mount the app directory
+      # - ./app:/app/app
+      # You can also mount a .env file
+      # - ./.env:/app/.env
+    restart: unless-stopped 
