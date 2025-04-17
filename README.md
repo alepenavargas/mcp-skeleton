@@ -88,6 +88,90 @@ The MCP server can be configured through environment variables:
 
 You can set these in a `.env` file or pass them directly when running the server.
 
+## Library and SDK Management
+
+### Strict Library Usage Guidelines
+
+1. **Official SDKs Only**: Always use official SDKs and libraries provided by service vendors. Do not substitute with alternative libraries unless officially deprecated.
+
+2. **Version Control**:
+   - Lock library versions in `pyproject.toml`
+   - Document any specific version requirements in code comments
+   - Maintain a `requirements.txt` for non-Poetry deployments
+
+3. **Dependencies**:
+   ```toml
+   [tool.poetry.dependencies]
+   python = "^3.11"
+   # Always specify exact versions for critical dependencies
+   fastapi = "0.95.0"
+   uvicorn = "0.21.1"
+   ```
+
+## Service Initialization and Management
+
+### Pre-start Checklist
+
+1. **Port Verification**:
+   ```bash
+   # Check if required ports are available
+   sudo lsof -i :9090
+   ```
+
+2. **Service Dependencies**:
+   - Verify all required external services are accessible
+   - Check API endpoints availability
+   - Validate environment variables
+
+3. **Resource Requirements**:
+   - Document minimum memory requirements
+   - Specify CPU requirements
+   - List required disk space
+
+### Docker Deployment Guidelines
+
+1. **Port Management**:
+   ```bash
+   # Check for port conflicts before building
+   docker container ls --format "table {{.Ports}}"
+   
+   # Use dynamic port mapping if needed
+   docker run -P mcp-skeleton
+   ```
+
+2. **Container Health Checks**:
+   ```dockerfile
+   HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+     CMD curl -f http://localhost:9090/ping || exit 1
+   ```
+
+3. **Resource Limits**:
+   ```yaml
+   # docker-compose.yml
+   services:
+     mcp:
+       build: .
+       deploy:
+         resources:
+           limits:
+             cpus: '1'
+             memory: 1G
+   ```
+
+### Testing Strategy
+
+1. **Essential Tests Only**:
+   - Focus on critical path testing
+   - Test external service integrations
+   - Validate core functionality
+   - Skip redundant unit tests for standard library functions
+
+2. **Integration Testing**:
+   - Test service initialization
+   - Verify tool registration
+   - Validate API endpoints
+   - Check SSE functionality
+
 ## Customizing the Framework
 
 ### Creating Custom Tools
