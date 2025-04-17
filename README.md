@@ -15,61 +15,56 @@ A flexible and modular framework for building MCP (Model Context Protocol) serve
 
 ### Prerequisites
 
-- Python 3.11 or higher
-- Poetry (for dependency management)
+- Docker
+- Docker Compose
 
-### Installation
+### Deployment with Docker
 
-1. Clone the repository or copy the skeleton:
+The recommended way to run MCP Skeleton is using Docker, which ensures consistent environments and easy deployment:
+
+1. Clone the repository:
 
 ```bash
-# Option 1: Clone the repo
 git clone https://github.com/your-username/mcp-skeleton.git
 cd mcp-skeleton
-
-# Option 2: Copy the skeleton to your project
-cp -r /path/to/mcp_skeleton your-project/
-cd your-project
 ```
 
-2. Install dependencies:
+2. Create a `.env` file from the example:
 
 ```bash
-poetry install
+cp .env.example .env
 ```
 
-### Running the Server
-
-You can run the server directly with Poetry:
+3. Build and run with Docker Compose:
 
 ```bash
-poetry run python -m app
-```
-
-Or activate the Poetry environment first:
-
-```bash
-poetry shell
-python -m app
+docker-compose up -d
 ```
 
 The server will start on port 9090 by default. You can access:
 - SSE endpoint: http://localhost:9090/sse
 - Health check: http://localhost:9090/ping
 
-### Docker
+### Docker Configuration
 
-Build and run with Docker:
+You can customize the deployment using environment variables in your `.env` file or docker-compose.yml:
 
-```bash
-docker build -t mcp-skeleton .
-docker run -p 9090:9090 mcp-skeleton
-```
-
-Or use Docker Compose:
-
-```bash
-docker-compose up
+```yaml
+# docker-compose.yml
+services:
+  mcp:
+    build: .
+    ports:
+      - "9090:9090"
+    environment:
+      - MCP_NAME=MCP-Skeleton
+      - MCP_DESCRIPTION=Generic MCP Server
+      - MCP_PORT=9090
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 1G
 ```
 
 ## Configuration
