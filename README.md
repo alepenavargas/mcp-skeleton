@@ -18,6 +18,42 @@ A flexible and modular framework for building MCP (Model Context Protocol) serve
 - Docker
 - Docker Compose
 
+### Pre-deployment Port Check
+
+Before deploying the MCP server, it's crucial to verify that the required ports are available:
+
+1. Check if port 9090 is already in use:
+
+```bash
+# On Linux/MacOS
+sudo lsof -i :9090
+# or
+netstat -an | grep 9090
+
+# On Windows (PowerShell)
+netstat -ano | findstr :9090
+```
+
+2. Check existing Docker containers' port mappings:
+
+```bash
+# List all containers and their port mappings
+docker container ls --format "table {{.Names}}\t{{.Ports}}"
+
+# Alternative detailed view
+docker ps -a --format "table {{.Names}}\t{{.Ports}}\t{{.Status}}"
+```
+
+If the port is in use, you have two options:
+- Stop the service using the port
+- Modify the port mapping in `docker-compose.yml`:
+  ```yaml
+  services:
+    mcp:
+      ports:
+        - "9091:9090"  # Map to a different host port (e.g., 9091)
+  ```
+
 ### Deployment with Docker
 
 The recommended way to run MCP Skeleton is using Docker, which ensures consistent environments and easy deployment:
