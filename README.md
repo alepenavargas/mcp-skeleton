@@ -102,10 +102,13 @@ You can set these in a `.env` file or pass them directly when running the server
 3. **Dependencies**:
    ```toml
    [tool.poetry.dependencies]
-   python = "^3.11"
-   # Always specify exact versions for critical dependencies
-   fastapi = "0.95.0"
-   uvicorn = "0.21.1"
+   python = ">=3.11,<4"
+   mcp = "^1.3.0"
+   requests = "^2.31.0"
+   uvicorn = "^0.29.0"
+   starlette = "^0.36.3"
+   python-dotenv = "^1.0.0"
+   pydantic = "^2.4.0"
    ```
 
 ## Service Initialization and Management
@@ -322,11 +325,10 @@ mcp_skeleton/
 │       ├── api_tools.py    # API integration tools
 │       ├── http_tools.py   # HTTP request tools
 │       └── web_tools.py    # Web navigation tools
-├── tests/                  # Test directory
 ├── Dockerfile              # Docker configuration
 ├── docker-compose.yml      # Docker Compose configuration
 ├── pyproject.toml          # Poetry configuration
-└── README.md               # Documentation
+└── README.md              # Documentation
 ```
 
 ## Contributing
